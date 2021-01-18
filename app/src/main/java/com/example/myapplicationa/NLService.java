@@ -199,11 +199,18 @@ public class NLService extends NotificationListenerService {
 
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
+        String pack = sbn.getPackageName();
+
+
 
         Log.i(TAG,"**********  onNotificationPosted");
         Log.i(TAG,"ID :" + sbn.getId() + "t" + sbn.getNotification().tickerText + "\t" + sbn.getPackageName());
         Intent i = new  Intent("com.example.myapplicationa.NOTIFICATION_LISTENER_EXAMPLE");
+        i.putExtra("package", pack);
+        i.putExtra("id", sbn.getId());
         i.putExtra("notification_event","onNotificationPosted :" + sbn.getPackageName() + "\n");
+        i.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
+        i.setComponent(new ComponentName("com.example.myapplicationb","com.example.myapplicationb.MyBroadcastReceiver"));
         sendBroadcast(i);
 
         nAdded++;
